@@ -8,15 +8,32 @@
             <label for="content">Blog İçeriği</label>
             <textarea v-model.lazy="blog.content"></textarea>
 
+            <div id="checkboxes">
+                <label>Çizgi Roman</label>
+                <input type="checkbox" value="cizgi-roman" v-model="blog.categories">
+
+                <label>Hikaye</label>
+                <input type="checkbox" value="hikaye" v-model="blog.categories">
+
+                <label>Masal</label>
+                <input type="checkbox" value="masal" v-model="blog.categories">
+
+                <label>Şiir</label>
+                <input type="checkbox" value="siir" v-model="blog.categories">
+            </div>
         </form>
 
         <div id="preview">
             <h3>Blog Ön İzleme</h3>
             <p>Blog Başlığı: {{ this.blog.title }}</p>
             <p>Blog İçeriği: {{ this.blog.content }}</p>
-            <p></p>
+            <p>Categories:</p>
+            <ul>
+                <li v-for="category in this.blog.categories">{{ category }}</li>
+            </ul>
 
         </div>
+
     </div>
 </template>
 
@@ -26,8 +43,10 @@ export default {
         return {
             blog: {
                 title: "",
-                content: ""
+                content: "",
+                categories:[]
             }
+            
         }
     },
 }
@@ -64,5 +83,16 @@ textarea {
 
 h3 {
     margin-top: 10px;
+}
+
+#checkboxes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#checkboxes input{
+    margin-top: 13px;
+    margin-right: 20px;
 }
 </style>
