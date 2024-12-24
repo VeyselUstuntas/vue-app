@@ -1,4 +1,3 @@
-<!-- directives -->
 <script setup lang="ts">
     const vRainbow = {
         mounted:(el:HTMLElement) => el.style.color = "#" + Math.random().toString().slice(2,8) 
@@ -7,13 +6,12 @@
 
 <template>
     <div id="show-blogs">
-        <h1>Tüm Blog Gönderileri</h1>
+        <h1>Tüm Blog Gönderi Başlıkları</h1>
         <input class="search" type="text" placeholder="Bloglarda Ara" v-model="keyword">
         <div class="single-blog">
             <template v-for="blog in searchBlog">
                 <div class="blog">
                     <h2 v-rainbow>{{upperCaseTitleC(blog.title)}}</h2>
-                    <p>{{blog.body}}</p>
                 </div>
             </template>
         </div>
@@ -58,7 +56,6 @@ export default defineComponent( {
             })
             .catch((err) => console.log(err))
     },
-    // mixins
     mixins:[mixins]
 
 });
