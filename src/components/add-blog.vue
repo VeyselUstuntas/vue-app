@@ -1,7 +1,7 @@
 <template>
     <div id="add-blog">
-        <h2>Yeni Blog Post Ekleme Formu</h2>
-        <form action="#">
+        <h2 v-if="!this.submitted">Yeni Blog Post Ekleme Formu</h2>
+        <form v-if="!this.submitted" action="#">
             <label for="title">Blog Başlığı</label>
             <input v-model.lazy="blog.title" type="text" required>
 
@@ -22,16 +22,26 @@
                 <input type="checkbox" value="siir" v-model="blog.categories">
             </div>
 
-            <label>Yazar:</label>
-            <select v-model="this.blog.author">
-                <option value="">Bir Yazar Seçin</option>
-                <template v-for="author in this.authors">
-                    <option :value="author">{{ author }}</option>
-                </template>
-            </select>
+            <div id="authors">
+                <label>Yazar:</label>
+
+                <select v-model="this.blog.author">
+                    <option value="">Bir Yazar Seçin</option>
+                    <template v-for="author in this.authors">
+                        <option :value="author">{{ author }}</option>
+                    </template>
+                </select>
+            </div>
+
+            <button v-on:click.prevent="saveBlog" type="submit">Save Blog</button>
         </form>
 
-        <div id="preview">
+        <div v-if="this.submitted">
+            Tebrikler Mesajınız Başarı ile Alındı
+            <button @click="this.submitted=false">New Blog</button>
+        </div>
+
+        <div v-if="!this.submitted" id="preview">
             <h3>Blog Ön İzleme</h3>
             <p>Blog Başlığı: {{ this.blog.title }}</p>
             <p>Blog İçeriği: {{ this.blog.content }}</p>
@@ -51,14 +61,43 @@
 export default {
     data() {
         return {
+            base_url: "https://jsonplaceholder.typicode.com/",
+            post_url: "posts/",
             blog: {
                 title: "",
                 content: "",
-                categories:[],
-                author:""
+                categories: [],
+                author: ""
             },
-            authors:["Veysel","Ali","Mehmet","İbrahim","Hasan","Harun"]
-            
+            authors: ["Veysel", "Ali", "Mehmet", "İbrahim", "Hasan", "Harun"],
+            submitted: false,
+
+        }
+    },
+    methods: {
+        saveBlog() {
+            let self = this;
+            console.log(this.blog);
+            console.log(this.base_url + this.post_url);
+            fetch(this.base_url + this.post_url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'content/type'
+                },
+                body: {
+                    userId: 1,
+                    title: this.blog.title,
+                    body: this.blog.content
+                },
+
+            }).then((res) => res.json())
+                .then(function (json) {
+                    console.log(json);
+                    self.submitted = !self.submitted;
+                })
+                .catch(function (err) {
+                    console.log(err);
+                })
         }
     },
 }
@@ -97,14 +136,24 @@ h3 {
     margin-top: 10px;
 }
 
-#checkboxes{
+#checkboxes {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#checkboxes input{
+#checkboxes input {
     margin-top: 13px;
     margin-right: 20px;
+}
+
+#authors {
+    margin: 10px 0;
+}
+
+#authors select,
+#authors label {
+    display: inline-block;
+    margin-right: 5px;
 }
 </style>
