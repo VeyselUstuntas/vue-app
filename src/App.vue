@@ -1,6 +1,6 @@
 <template>
   <app-header></app-header>
-  <RouterView></RouterView>
+  <router-view></router-view>
 </template>
 
 <script>
