@@ -7,10 +7,11 @@
 <template>
     <div id="show-blogs">
         <h1>Tüm Blog Gönderileri</h1>
+        <input class="search" type="text" placeholder="Bloglarda Ara" v-model="keyword">
         <div class="single-blog">
-            <template v-for="blog in this.blogs">
+            <template v-for="blog in searchBlog">
                 <div class="blog">
-                    <h2 v-rainbow>{{blog.title}}</h2>
+                    <h2 v-rainbow>{{$filters.upperCaseFilter(blog.title)}}</h2>
                     <p>{{blog.body}}</p>
                 </div>
             </template>
@@ -24,12 +25,26 @@ import { Url } from '@/url';
 export default {
     data() {
         return {
-            blogs: []
+            blogs: [],
+            keyword:""
+        }
+    },
+    methods:{
+        upperCaseTitle(title){
+            return title.toUpperCase();
+        }
+    },
+    computed:{
+        upperCaseTitleC(){
+            return (title) => title.toUpperCase();
+        },
+        searchBlog(){
+            return this.blogs.filter(blog => blog.title.match(this.keyword));
         }
     },
     created() {
         self = this;
-        fetch(Url.BASE_URL + Url.POST_URL, {
+        fetch(Url.getFullPostUrl(), {
             method: "GET",
             headers: {
                 "Content-Type": "content/type"
@@ -40,7 +55,8 @@ export default {
                 this.blogs = json.slice(0,10);
             })
             .catch((err) => console.log(err))
-    }
+    },
+
 }
 </script>
 
@@ -57,5 +73,13 @@ export default {
     padding: 20px;
     margin: 10px;
     border-radius: 1rem;
+}
+
+.search{
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
 }
 </style>
