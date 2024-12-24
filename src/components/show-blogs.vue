@@ -1,10 +1,16 @@
+<script setup>
+    const vRainbow = {
+        mounted:(el) => el.style.color = "#" + Math.random().toString().slice(2,8) 
+    }
+</script>
+
 <template>
     <div id="show-blogs">
         <h1>Tüm Blog Gönderileri</h1>
         <div class="single-blog">
             <template v-for="blog in this.blogs">
                 <div class="blog">
-                    <h2>{{blog.title}}</h2>
+                    <h2 v-rainbow>{{blog.title}}</h2>
                     <p>{{blog.body}}</p>
                 </div>
             </template>
