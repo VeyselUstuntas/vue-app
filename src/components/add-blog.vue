@@ -21,6 +21,14 @@
                 <label>Şiir</label>
                 <input type="checkbox" value="siir" v-model="blog.categories">
             </div>
+
+            <label>Yazar:</label>
+            <select v-model="this.blog.author">
+                <option value="">Bir Yazar Seçin</option>
+                <template v-for="author in this.authors">
+                    <option :value="author">{{ author }}</option>
+                </template>
+            </select>
         </form>
 
         <div id="preview">
@@ -31,6 +39,8 @@
             <ul>
                 <li v-for="category in this.blog.categories">{{ category }}</li>
             </ul>
+            <p>Author: {{ this.blog.author }}</p>
+
 
         </div>
 
@@ -44,8 +54,10 @@ export default {
             blog: {
                 title: "",
                 content: "",
-                categories:[]
-            }
+                categories:[],
+                author:""
+            },
+            authors:["Veysel","Ali","Mehmet","İbrahim","Hasan","Harun"]
             
         }
     },
